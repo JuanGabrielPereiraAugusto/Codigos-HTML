@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WikiPédia - Enciclopédia Livre</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #764ba2;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .search-box {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-search {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            background: white;
+            color: #667eea;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Content Section */
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .card-tag {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        /* Article Section */
+        .article-section {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            margin-bottom: 3rem;
+        }
+
+        .article-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .article-meta {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .article-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-secondary {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f5f5;
+        }
+
+        .article-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .article-content h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #333;
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Sidebar */
+        .article-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            border: 1px solid #e0e0e0;
+        }
+
+        .sidebar h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .sidebar-item {
+            padding: 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .sidebar-item:hover {
+            background: white;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-column h4 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 0.6rem;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #ddd;
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .article-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .article-section {
+                padding: 1.5rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            nav {
+                padding: 0 1rem;
+            }
+
+            .nav-right {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">WikiPédia</div>
+            <div class="nav-right">
+                <a href="#" class="nav-link">Editar</a>
+                <a href="#" class="nav-link">Comunidade</a>
+                <a href="#" class="nav-link">Sobre</a>
+                <button class="btn-login">Entrar</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>👋 Bem-vindo à WikiPédia</h1>
+        <p>A enciclopédia livre que qualquer um pode editar</p>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="O que você deseja aprender?">
+            <button class="btn-search">Buscar</button>
+        </div>
+    </section>
+
+    <!-- Featured Articles -->
+    <section class="content">
+        <h2 class="section-title">📌 Artigos em Destaque</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-image">🌍</div>
+                <div class="card-content">
+                    <div class="card-title">História da Terra</div>
+                    <div class="card-description">
+                        Conheça a evolução do nosso planeta ao longo de bilhões de anos.
+                    </div>
+                    <span class="card-tag">Ciência</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">🚀</div>
+                <div class="card-content">
+                    <div class="card-title">Exploração Espacial</div>
+                    <div class="card-description">
+                        Descubra os avanços da humanidade no espaço e futuras missões.
+                    </div>
+                    <span class="card-tag">Astronomia</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">💻</div>
+                <div class="card-content">
+                    <div class="card-title">Revolução Digital</div>
+                    <div class="card-description">
+                        A história da computação e seu impacto na sociedade moderna.
+                    </div>
+                    <span class="card-tag">Tecnologia</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">🎨</div>
+                <div class="card-content">
+                    <div class="card-title">Artes e Cultura</div>
+                    <div class="card-description">
+                        Explore manifestações artísticas do mundo inteiro e através dos séculos.
+                    </div>
+                    <span class="card-tag">Arte</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">📚</div>
+                <div class="card-content">
+                    <div class="card-title">Literatura Clássica</div>
+                    <div class="card-description">
+                        Os grandes autores e obras que marcaram a história da literatura.
+                    </div>
+                    <span class="card-tag">Literatura</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image">⚽</div>
+                <div class="card-content">
+                    <div class="card-title">Desportos Mundiais</div>
+                    <div class="card-description">
+                        Conheça os maiores eventos esportivos e seus atores principais.
+                    </div>
+                    <span class="card-tag">Desportos</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Example -->
+    <section class="content">
+        <article class="article-section">
+            <div class="article-header">
+                <div>
+                    <h1 class="article-title">Inteligência Artificial</h1>
+                    <div class="article-meta">Última atualização: 16 de Fevereiro de 2026</div>
+                </div>
+                <div class="article-buttons">
+                    <button class="btn-secondary">✏️ Editar</button>
+                    <button class="btn-secondary">⭐ Salvar</button>
+                </div>
+            </div>
+
+            <div class="article-wrapper">
+                <div class="article-content">
+                    <p>
+                        A <strong>Inteligência Artificial</strong> (IA) refere-se à simulação de processos de inteligência humana por máquinas, especialmente sistemas computacionais. Estes processos incluem aprendizagem, raciocínio e auto-correção.
+                    </p>
+
+                    <h2>História</h2>
+                    <p>
+                        O termo "Inteligência Artificial" foi criado em 1956 durante a conferência de Dartmouth. Desde então, a área tem evoluído significativamente com a criação de sistemas cada vez mais sofisticados.
+                    </p>
+
+                    <h2>Aplicações</h2>
+                    <ul>
+                        <li>Processamento de Linguagem Natural</li>
+                        <li>Visão Computacional</li>
+                        <li>Sistemas de Recomendação</li>
+                        <li>Robótica Autônoma</li>
+                        <li>Análise Preditiva</li>
+                    </ul>
+
+                    <h2>Tecnologias Modernas</h2>
+                    <p>
+                        Os avanços recentes incluem redes neurais profundas, algoritmos de aprendizado de máquina e modelos generativos. Estas tecnologias têm transformado diversos setores da economia e da sociedade.
+                    </p>
+
+                    <h2>Desafios e Ética</h2>
+                    <p>
+                        A IA levanta questões importantes sobre segurança, privacidade e responsabilidade. É fundamental garantir que o desenvolvimento da IA seja feito de forma ética e responsável.
+                    </p>
+                </div>
+
+                <aside class="sidebar">
+                    <h3>ℹ️ Informações</h3>
+                    <div class="sidebar-item">Histórico</div>
+                    <div class="sidebar-item">Em Discussão</div>
+                    <div class="sidebar-item">Artigos Relacionados</div>
+                    <div class="sidebar-item">Editar Seção</div>
+                    <div class="sidebar-item">Referências</div>
+                </aside>
+            </div>
+        </article>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Sobre WikiPédia</h4>
+                <a href="#">Sobre nós</a>
+                <a href="#">Comunidade</a>
+                <a href="#">Pressão</a>
+                <a href="#">Contate-nos</a>
+            </div>
+            <div class="footer-column">
+                <h4>Navegação</h4>
+                <a href="#">Página Principal</a>
+                <a href="#">Artigos Aleatórios</a>
+                <a href="#">Categorias</a>
+                <a href="#">Buscar</a>
+            </div>
+            <div class="footer-column">
+                <h4>Participar</h4>
+                <a href="#">Editar</a>
+                <a href="#">Comunidade</a>
+                <a href="#">Traduções</a>
+                <a href="#">Doações</a>
+            </div>
+            <div class="footer-column">
+                <h4>Políticas</h4>
+                <a href="#">Privacidade</a>
+                <a href="#">Termos de Uso</a>
+                <a href="#">Conheça-nos</a>
+                <a href="#">Acessibilidade</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 WikiPédia. Disponível sob a licença Creative Commons Atribuição-CompartilhaIgual.</p>
+        </div>
+    </footer>
+</body>
+</html>
